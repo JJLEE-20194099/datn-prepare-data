@@ -6,7 +6,7 @@ import os
 load_dotenv(override=True)
 
 from seleniumbase import SB
-from utils import  Redis, Kafka
+from consume.utils import  Redis, Kafka
 
 crawlbot_server = os.getenv('CRAWLBOT_SERVER')
 

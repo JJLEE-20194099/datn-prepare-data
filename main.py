@@ -7,7 +7,8 @@ import uvicorn
 import threading
 
 from crawler_tool import Batdongsan, crawl_batdongsan_by_url
-from utils import Redis
+from consume.utils import Redis
+
 app = FastAPI()
 
 def get_key_meeyland():
