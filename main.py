@@ -118,3 +118,4 @@ def crawl_data_by_url(url: str, proxy: str = None):
         'url': url,
         'html_source': html_content
     }
+
