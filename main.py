@@ -4,6 +4,9 @@ import time
 from bs4 import BeautifulSoup
 import requests
 import uvicorn
+
+from crawler_tool import Batdongsan
+from utils import Redis
 app = FastAPI()
 
 def get_key_meeyland():
@@ -119,3 +122,13 @@ def crawl_data_by_url(url: str, proxy: str = None):
         'html_source': html_content
     }
 
+
+@app.get("/batdongsan/crawl-streaming")
+def crawl_streaming():
+    list_url = []
+    for page in range(1,4,1):
+        list_page = Batdongsan().crawl_url(page)
+        list_url.extend(list_page)
+    print('Before : ', len(list_url), ' url')
+    list_url_not_crawl = [url for url in list_url if Redis().check_id_exist(url, 'raw_batdongsan') == False]
+    print('After : ', len(list_url_not_crawl), ' url')
