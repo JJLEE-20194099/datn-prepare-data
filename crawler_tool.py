@@ -6,6 +6,7 @@ import os
 load_dotenv(override=True)
 
 from seleniumbase import SB
+from utils import  Redis, Kafka
 
 crawlbot_server = os.getenv('CRAWLBOT_SERVER')
 
@@ -31,3 +32,20 @@ class Batdongsan:
             print('Error when crawl url from batdongsan.com.vn, status code: ', url.status_code)
             return []
 
+    def crawl_data_by_url(self,url,proxy=None):
+        if proxy is not None:
+            data = requests.request("GET", f'{crawlbot_server}/batdongsan/crawl_data_by_url?url={url}&proxy={proxy}')
+        else:
+            data = requests.request("GET", f'{crawlbot_server}/batdongsan/crawl_data_by_url?url={url}')
+        if data.status_code == 200:
+            return data.json()
+        else:
+            print('Error when crawl data by url from batdongsan.com.vn, status code: ', data.status_code)
+            return None
+
+
+def crawl_batdongsan_by_url(url):
+    data = Batdongsan().crawl_data_by_url(url)
+    if data is not None:
+        if Kafka().send_data(data,'raw_batdongsan') == True:
+            Redis().add_id_to_set(url, 'raw_batdongsan')

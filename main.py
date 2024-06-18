@@ -4,8 +4,9 @@ import time
 from bs4 import BeautifulSoup
 import requests
 import uvicorn
+import threading
 
-from crawler_tool import Batdongsan
+from crawler_tool import Batdongsan, crawl_batdongsan_by_url
 from utils import Redis
 app = FastAPI()
 
@@ -132,3 +133,13 @@ def crawl_streaming():
     print('Before : ', len(list_url), ' url')
     list_url_not_crawl = [url for url in list_url if Redis().check_id_exist(url, 'raw_batdongsan') == False]
     print('After : ', len(list_url_not_crawl), ' url')
+
+    threads = []
+    for url in list_url_not_crawl:
+        t = threading.Thread(target=crawl_batdongsan_by_url, args=(url,))
+        threads.append(t)
+    for thread in threads:
+        thread.start()
+        time.sleep(2)
+    for thread in threads:
+        thread.join()

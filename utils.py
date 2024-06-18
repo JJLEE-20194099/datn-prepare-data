@@ -5,6 +5,10 @@ import os
 load_dotenv(override=True)
 
 import redis
+import json
+
+def json_serializer(data):
+    return json.dumps(data).encode('utf-8')
 
 class Redis:
     def __init__(self):
