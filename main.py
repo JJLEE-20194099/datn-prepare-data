@@ -1,13 +1,19 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, Depends, BackgroundTasks, FastAPI
 from seleniumbase import SB
 import time
 from bs4 import BeautifulSoup
 import requests
 import uvicorn
 import threading
+from tqdm import tqdm
 
 from crawler_tool import Batdongsan, crawl_batdongsan_by_url
 from consume.utils import Redis
+
+lst_proxy = []
+with open(r"./ip.txt", 'r') as f:
+    for line in f:
+        lst_proxy.append(line.strip())
 
 app = FastAPI()
 
@@ -98,7 +104,7 @@ def crawl_data_by_url(url: str, proxy: str = None):
 @app.get("/batdongsan/crawl_url",tags=["batdongsan.com.vn"])
 def crawl_url(page: int,proxy: str = None):
 
-    with SB(uc=True,headless=True,block_images=True,proxy=proxy,time_limit=10) as sb:
+    with SB(uc=True,headless=True,block_images=True,proxy_bypass_list=lst_proxy,time_limit=30) as sb:
         if page == 0 or page == 1:
             url = 'https://batdongsan.com.vn/nha-dat-ban?sortValue=1'
         else:
@@ -114,7 +120,7 @@ def crawl_url(page: int,proxy: str = None):
 
 @app.get("/batdongsan/crawl_data_by_url",tags=["batdongsan.com.vn"])
 def crawl_data_by_url(url: str, proxy: str = None):
-    with SB(uc=True,block_images=True,headless=True,proxy=proxy,time_limit=30) as sb:
+    with SB(uc=True,block_images=True,headless=True, proxy_bypass_list=lst_proxy,time_limit=30) as sb:
         sb.open(url)
         time.sleep(1)
         html_content = sb.get_page_source()
@@ -125,22 +131,21 @@ def crawl_data_by_url(url: str, proxy: str = None):
     }
 
 
-@app.get("/batdongsan/crawl-streaming")
-def crawl_streaming():
+def crawl_bds():
     list_url = []
-    for page in range(1,4,1):
-        list_page = Batdongsan().crawl_url(page)
+    for page in tqdm(range(1,200,1)):
+        list_page = Batdongsan().crawl_url(page, proxy=True)
         list_url.extend(list_page)
     print('Before : ', len(list_url), ' url')
     list_url_not_crawl = [url for url in list_url if Redis().check_id_exist(url, 'raw_batdongsan') == False]
     print('After : ', len(list_url_not_crawl), ' url')
 
-    threads = []
-    for url in list_url_not_crawl:
-        t = threading.Thread(target=crawl_batdongsan_by_url, args=(url,))
-        threads.append(t)
-    for thread in threads:
-        thread.start()
-        time.sleep(2)
-    for thread in threads:
-        thread.join()
+    for url in tqdm(list_url_not_crawl):
+        t = crawl_batdongsan_by_url(url)
+
+
+@app.get("/batdongsan/crawl-streaming")
+def crawl_streaming(background_tasks: BackgroundTasks):
+
+    crawl_bds()
+    return "processing"

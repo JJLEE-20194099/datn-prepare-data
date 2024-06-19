@@ -1,0 +1,1 @@
+tmux new-session -d -s url_1000 'python create_url_pool_1000.py'

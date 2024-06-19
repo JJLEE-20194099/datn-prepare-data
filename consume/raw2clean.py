@@ -79,6 +79,7 @@ def processBatdongsan(msg, consumer):
     print("Start processing property")
     data = msg.value
     databatdongsan = transferBatdongsan(data["html_source"])
+    print(databatdongsan)
     if databatdongsan != None:
         KafkaInstance.send_data(databatdongsan, "datn_batdongsan")
         consumer.commit()
