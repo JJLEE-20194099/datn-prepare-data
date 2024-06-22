@@ -15,6 +15,10 @@ with open(r"./ip.txt", 'r') as f:
     for line in f:
         lst_proxy.append(line.strip())
 
+proxies = {
+        "http": lst_proxy
+    }
+
 app = FastAPI()
 
 def get_key_meeyland():
@@ -86,10 +90,7 @@ def crawl_data_by_url(url: str, proxy: str = None):
     'upgrade-insecure-requests': '1',
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
     }
-    if proxy is not None:
-        response = requests.request("GET", url, headers=headers, data=payload,proxies={'https': proxy})
-    else:
-        response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.request("GET", url, headers=headers, data=payload, proxies = proxies)
     if response.status_code == 200:
         return {
             'success': True,
@@ -149,3 +150,31 @@ def crawl_streaming(background_tasks: BackgroundTasks):
 
     crawl_bds()
     return "processing"
+
+@app.get("/muaban/crawl_id",tags=["muaban.net"])
+def crawl_id(offset: int,proxy: str = None):
+    url = f'https://muaban.net/listing/v1/classifieds/listing?subcategory_id=169&category_id=33&sort=1&limit=20&offset={offset}'
+
+    print(url)
+    response = requests.get(url,proxies=proxies)
+
+    if response.status_code == 200:
+        if 'items' in response.json():
+            return [item['id'] for item in response.json()['items']]
+        else:
+            print('No items in response json when crawl id from muaban.net')
+            return []
+    else:
+        print('Error when crawl id from muaban.net, status code: ', response.status_code)
+        return []
+
+@app.get("/muaban/crawl_data_by_id",tags=["muaban.net"])
+def crawl_data_by_id(id: str,proxy: str = None):
+    url = f'https://muaban.net/listing/v1/classifieds/{id}/detail'
+    response = requests.get(url,proxies=proxies)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print('Error when crawl data by id from muaban.net, status code: ', response.status_code)
+        return None
