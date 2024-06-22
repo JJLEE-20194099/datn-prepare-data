@@ -81,16 +81,9 @@ def processMuaban(msg):
         KafkaInstance.send_data(datamuaban, "datn_muaban")
 
 
-def runMuanban():
+def runMuaban():
     consumer = KafkaInstance.kafka_consumer("raw_muaban", ["raw_muaban"])
-    for msg in consumer:
-        t = threading.Thread(target=processMuaban, args=(msg,))
-        t.start()
-        time.sleep(1)
-        print("threading.active_count() ", threading.active_count())
-        if threading.active_count() >= MAX_THREAD:
-            time.sleep(10)
-            print("sleep 10s")
+    for msg in tqdm(consumer):
+        processMuaban(msg)
 
-
-runMuanban()
+runMuaban()

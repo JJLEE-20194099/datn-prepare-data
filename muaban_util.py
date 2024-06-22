@@ -217,7 +217,6 @@ def landSize(a):
 
 def transferMuaban(a):
    # convert string to json
-   a = json.loads(a)
    address_full = address(a)
    if address_full == None:
       return None
