@@ -19,5 +19,6 @@ for i in tqdm(range(5000)):
 
     try:
         data = crawl_batdongsan_by_url(url)
+        time.sleep(3)
     except Exception as e:
         print(e)

@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import pymongo
+from pymongo import InsertOne
 from dotenv import load_dotenv
+from datetime import datetime
 import os
 load_dotenv(override=True)
 
@@ -52,6 +55,11 @@ class Muaban:
         url = requests.request("GET", f'{crawlbot_server}/muaban/crawl_data_by_id?id={id}')
         return url.json()
 
+class Meeyland:
+    def crawl_data_by_page(self, page, proxy=None):
+        url = requests.request("GET", f'{crawlbot_server}/meeyland/crawl_id?page={page}')
+        return url.json()
+
 
 def crawl_batdongsan_by_url(url):
     data = Batdongsan().crawl_data_by_url(url)
@@ -71,3 +79,32 @@ def crawl_muaban_by_id(id):
             Redis().add_id_to_set(id, 'raw_muaban')
     else:
         print('crawl fail : ', id)
+
+connection_str = os.getenv('REALESTATE_DB')
+__client = pymongo.MongoClient(connection_str)
+
+database = 'realestate'
+__database = __client[database]
+
+collection = __database["realestate_url_pool"]
+
+
+def crawl_meeyland_by_page(page):
+    data = Meeyland().crawl_data_by_page(page)
+    if data is not None:
+        operations = []
+        for item in data:
+            if Redis().check_id_exist(item['_id'], 'raw_meeyland'):
+                continue
+            if Kafka().send_data(item,'raw_meeyland') == True:
+                Redis().add_id_to_set(item['_id'], 'raw_meeyland')
+                operations.append(
+                    InsertOne({
+                        "crawl_at": datetime.now(),
+                        "url": item['_id'],
+                        "source": "meeyland"
+                    })
+                )
+        if len(operations):
+            collection.bulk_write(operations,ordered=False)
+

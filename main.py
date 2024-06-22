@@ -178,3 +178,27 @@ def crawl_data_by_id(id: str,proxy: str = None):
     else:
         print('Error when crawl data by id from muaban.net, status code: ', response.status_code)
         return None
+
+@app.get("/meeyland/crawl_id",tags=["meeyland.com"])
+def crawl_data(page: int,proxy: str = None):
+    if page == 0 or page == 1:
+        url = f'https://meeyland.com/_next/data/{key_meeyland}/mua-ban-nha-dat.json?filter=need%5B%5D%3Dcan_ban&page=1&sort=0&category=mua-ban-nha-dat'
+    else:
+        url = f'https://meeyland.com/_next/data/{key_meeyland}/mua-ban-nha-dat.json?filter=need%5B%5D%3Dcan_ban&page={page}&sort=0&category=mua-ban-nha-dat'
+
+    if proxy is not None:
+        response = requests.request("GET", url,proxies={'https': proxy})
+    else:
+        response = requests.request("GET", url)
+    if response.status_code == 200:
+        data = response.json()
+        data = data['pageProps']['fallback']
+        return data[list(data.keys())[0]]['data']
+    else:
+        print('Error when crawl id from meeyland.com, status code: ', response.status_code)
+        return []
+
+@app.get("/meeyland/renew_key",tags=["meeyland.com"])
+def renew_key():
+    key_meeyland = get_key_meeyland()
+    return key_meeyland
