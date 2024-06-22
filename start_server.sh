@@ -1,3 +1,1 @@
-uvicorn main:app --port 8885 --host 0.0.0.0 --reload
-
-
+tmux new-session -d -s crawl_worker 'uvicorn main:app --port 8885 --host 0.0.0.0 --reload'

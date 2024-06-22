@@ -1,0 +1,1 @@
+tmux new-session -d -s etl_60000 'python etl_60000.py'

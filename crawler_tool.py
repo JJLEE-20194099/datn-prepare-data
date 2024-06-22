@@ -49,3 +49,5 @@ def crawl_batdongsan_by_url(url):
     if data is not None:
         if Kafka().send_data(data,'raw_batdongsan') == True:
             Redis().add_id_to_set(url, 'raw_batdongsan')
+
+    return data
