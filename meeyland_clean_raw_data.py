@@ -5,7 +5,7 @@ from kafka import KafkaProducer, KafkaConsumer
 from meeyland_util import transferMeeyland
 import json
 from tqdm import tqdm
-
+from consume.utils import Redis
 from dotenv import load_dotenv
 import os
 load_dotenv(override=True)
@@ -84,13 +84,18 @@ def processMeeyland(msg):
     data = msg.value
     dataMeeyland = transferMeeyland(data)
     if dataMeeyland != None:
-        print("Process Raw Ok")
+        print("Process New Message Ok")
         KafkaInstance.send_data(dataMeeyland, "datn_meeyland")
 
 
 def runMeeyland():
     consumer = KafkaInstance.kafka_consumer("raw_meeyland", ["raw_meeyland"])
     for msg in tqdm(consumer):
+
+        if Redis().check_id_exist(f'meeyland_offset_{msg.offset}', 'meeyland_clean_rawdata'):
+            print("Ignore Processed Messages")
+            continue
+        Redis().add_id_to_set(f'meeyland_offset_{msg.offset}', 'meeyland_clean_rawdata')
         processMeeyland(msg)
 
 runMeeyland()
