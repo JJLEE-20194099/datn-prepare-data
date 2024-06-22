@@ -1,0 +1,140 @@
+{
+    "id": 69337378,
+    "category_id": 33,
+    "subcategory_id": 169,
+    "city_id": 30,
+    "district_id": 374,
+    "ward_id": 11045,
+    "url": "/bat-dong-san/ban-dat-du-an-khu-dan-cu/chinh-chu-ban-nhanh-lo-biet-thu-truc-chinh-kdc-phu-nhuan-duong-20m-id69337378",
+    "title": "Chính chủ bán nhanh lô biệt thự trục chính, KDC Phú Nhuận đường 20m, ",
+    "body": "Chính chủ gửi bán lô đất đường chính 20m nối Đỗ Xuân Hợp ra Liên Phường, KDC Phú Nhuận, phường Phước Long B, TP Thủ Đức.<br /><br />- Lô A2:<br /><br />DT: 14x24, đường chính dự án rộng 20m.<br /><br />Hướng: Tây Bắc.<br /><br />Giá bán: 94 tr/m².<br /><br />Sổ cá nhân chủ để ở nhà.<br /><br />Liên hệ tư vấn:  <div class="phone-wrapper"><span class="phone-hidden" data-phone="0914920202"><span>091492****</span><span class="show-phone">Hiện số</span> </span><span class="tool-tips">Đã sao chép</span> </div>  -  <div class="phone-wrapper"><span class="phone-hidden" data-phone="0975147109"><span>097514****</span><span class="show-phone">Hiện số</span> </span><span class="tool-tips">Đã sao chép</span> </div>  (Viết Quốc).<br /><br />- Đ/c: Cty Đất Việt Lô N25, dự án SVHTT, P Phú Hữu, TP Thủ Đức<br /><br />Nhận Ký gửi, mua bán nhanh đất nền dự án Phú Nhuận Quận 9.<br /><br />Cảm ơn Quý khách hàng đã xem tin!<br />",
+    "address": "Đường Liên Phường, Phường Phước Long B, TP. Thủ Đức - Quận 9, TP.HCM",
+    "phone": "0914920202",
+    "contact_name": "Mr.Quoc",
+    "covers": [
+        "https://cloud.muaban.net/images/thumb-glist/2024/06/22/050/944ecfa3ce334e1389c922e46990c250.jpg"
+    ],
+    "images": [
+        {
+            "id": 174031925,
+            "url": "https://cloud.muaban.net/images/2024/06/22/050/944ecfa3ce334e1389c922e46990c250.jpg",
+            "thumb_url": "https://cloud.muaban.net/images/thumb-glist/2024/06/22/050/944ecfa3ce334e1389c922e46990c250.jpg"
+        },
+        {
+            "id": 174031930,
+            "url": "https://cloud.muaban.net/images/2024/06/22/051/44a1f6b16fad4ea182a6b6ce223f43f0.jpg",
+            "thumb_url": "https://cloud.muaban.net/images/thumb-glist/2024/06/22/051/44a1f6b16fad4ea182a6b6ce223f43f0.jpg"
+        },
+        {
+            "id": 174031931,
+            "url": "https://cloud.muaban.net/images/2024/06/22/059/1cb32663defa4f3b98c7f881ed1798c0.jpg",
+            "thumb_url": "https://cloud.muaban.net/images/thumb-glist/2024/06/22/059/1cb32663defa4f3b98c7f881ed1798c0.jpg"
+        }
+    ],
+    "video_url": "",
+    "total_images": 3,
+    "has_video": false,
+    "price": 31584000000,
+    "price_display": "31 tỷ 584 triệu",
+    "property_type": 42,
+    "property_subtype": 2508,
+    "street_id": 3850,
+    "project_id": 0,
+    "is_indexed": false,
+    "publish": true,
+    "publish_at": "2024-06-22T17:05:25.365614+07:00",
+    "publish_display": "Hôm nay",
+    "service_id": 128,
+    "service_end": "2024-07-02T17:05:30.159267+07:00",
+    "user_id": 1685688,
+    "is_anonymous": false,
+    "lat_lng": "",
+    "location": "Phường Phước Long B, TP. Thủ Đức - Quận 9",
+    "is_recruiters": false,
+    "is_chat": false,
+    "is_chat_off": false,
+    "job_posting": false,
+    "attributes": [
+        {
+            "value": "336 m²"
+        }
+    ],
+    "parameters": [
+        {
+            "id": 2508,
+            "label": "Loại hình đất",
+            "value": "Đất dự án, Khu dân cư",
+            "icon": "/icons/property-subtype.png",
+            "group": false,
+            "pos": {
+                "x": "900",
+                "y": "328"
+            }
+        },
+        {
+            "label": "Diện tích đất",
+            "value": "336 m²",
+            "icon": "/icons/land-area.png",
+            "group": false,
+            "pos": {
+                "x": "900",
+                "y": "64"
+            }
+        },
+        {
+            "label": "Giấy tờ pháp lý",
+            "value": "Sổ đỏ",
+            "icon": "/icons/legal.png",
+            "group": false,
+            "pos": {
+                "x": "900",
+                "y": "372"
+            }
+        }
+    ],
+    "breadcrumbs": [
+        {
+            "url": "/",
+            "name": "Trang chủ"
+        },
+        {
+            "url": "/bat-dong-san",
+            "name": "Bất động sản",
+            "cat": "Bất động sản",
+            "loc": ""
+        },
+        {
+            "url": "/bat-dong-san/ban-dat-du-an-khu-dan-cu",
+            "name": "Mua bán Đất dự án, Khu dân cư",
+            "cat": "Mua bán Đất dự án, Khu dân cư",
+            "loc": ""
+        },
+        {
+            "url": "/bat-dong-san/ban-dat-du-an-khu-dan-cu-ho-chi-minh",
+            "name": "TP.HCM",
+            "cat": "Mua bán Đất dự án, Khu dân cư",
+            "loc": "TP.HCM"
+        },
+        {
+            "url": "/bat-dong-san/ban-dat-du-an-khu-dan-cu-quan-9-ho-chi-minh",
+            "name": "TP. Thủ Đức - Quận 9",
+            "cat": "Mua bán Đất dự án, Khu dân cư",
+            "loc": "TP. Thủ Đức - Quận 9"
+        },
+        {
+            "url": "/bat-dong-san/ban-dat-du-an-khu-dan-cu-phuong-phuoc-long-b-quan-9-ho-chi-minh",
+            "name": "Phường Phước Long B",
+            "cat": "Mua bán Đất dự án, Khu dân cư",
+            "loc": "Phường Phước Long B"
+        },
+        {
+            "url": "",
+            "name": "Chính chủ bán nhanh lô biệt thự trục chính, KDC Phú Nhuận đường 20m, "
+        }
+    ],
+    "chat": {
+        "is_desktop": true,
+        "is_mobile": true,
+        "chat_type": "chat_popup"
+    }
+}

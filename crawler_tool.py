@@ -62,6 +62,9 @@ def crawl_batdongsan_by_url(url):
     return data
 
 def crawl_muaban_by_id(id):
+    if Redis().check_id_exist(id, 'raw_muaban'):
+        print("Existed Crawled Id")
+        return
     data = Muaban().crawl_data_by_id(id)
     if data is not None:
         if Kafka().send_data(data,'raw_muaban') == True:

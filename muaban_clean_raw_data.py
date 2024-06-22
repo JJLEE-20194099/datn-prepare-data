@@ -74,10 +74,17 @@ class Kafka:
 KafkaInstance = Kafka()
 MAX_THREAD = 10
 
+with open('streets.json', encoding='utf-8') as f:
+   streets = json.load(f)
+
+
+locationql = [f'{item["STREET"].lower()}, {item["WARD"].lower()}, {item["DISTRICT"].lower()}' for item in tqdm(streets)]
+
 def processMuaban(msg):
     data = msg.value
-    datamuaban = transferMuaban(data)
+    datamuaban = transferMuaban(data, locationql,streets )
     if datamuaban != None:
+        print("Process Raw Ok")
         KafkaInstance.send_data(datamuaban, "datn_muaban")
 
 

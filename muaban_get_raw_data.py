@@ -14,9 +14,7 @@ df = pd.read_csv('./url_pool.csv')
 urls = df['url'].tolist()
 
 result = []
-for i in tqdm(range(10)):
-    url = urls[i]
-
+for url in urls:
     try:
         data = crawl_muaban_by_id(url)
         time.sleep(5)
