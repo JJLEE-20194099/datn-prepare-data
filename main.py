@@ -21,9 +21,16 @@ proxies = {
 
 app = FastAPI()
 
+@app.get("/meeyland/get_key",tags=["meeyland"])
+def get_key():
+    key_meeyland = get_key_meeyland()
+    return key_meeyland
+
 def get_key_meeyland():
     url = 'https://meeyland.com/mua-ban-nha-dat'
-    response = requests.get(url)
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+    response = requests.get(url, proxies = proxies, headers=headers)
+    print(response)
     if response.status_code != 200:
         return get_key_meeyland()
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -33,7 +40,8 @@ def get_key_meeyland():
                 return script.get('src').split('/')[5]
 
 global key_meeyland
-key_meeyland = get_key_meeyland()
+# key_meeyland = get_key_meeyland()
+key_meeyland = '3lSCmuj_ATB848GjrZFCu'
 
 @app.get("/mogi/crawl_url",tags=["mogi.vn"])
 def crawl_url(page: int, proxy: str = None):
@@ -181,15 +189,18 @@ def crawl_data_by_id(id: str,proxy: str = None):
 
 @app.get("/meeyland/crawl_id",tags=["meeyland.com"])
 def crawl_data(page: int,proxy: str = None):
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     if page == 0 or page == 1:
         url = f'https://meeyland.com/_next/data/{key_meeyland}/mua-ban-nha-dat.json?filter=need%5B%5D%3Dcan_ban&page=1&sort=0&category=mua-ban-nha-dat'
     else:
         url = f'https://meeyland.com/_next/data/{key_meeyland}/mua-ban-nha-dat.json?filter=need%5B%5D%3Dcan_ban&page={page}&sort=0&category=mua-ban-nha-dat'
 
+    print(url)
+
     if proxy is not None:
-        response = requests.request("GET", url,proxies={'https': proxy})
+        response = requests.get(url,proxies={'https': proxy}, headers = headers)
     else:
-        response = requests.request("GET", url)
+        response = requests.get(url, headers = headers)
     if response.status_code == 200:
         data = response.json()
         data = data['pageProps']['fallback']

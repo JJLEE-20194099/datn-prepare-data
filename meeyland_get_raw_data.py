@@ -6,7 +6,7 @@ from tqdm import tqdm
 from crawler_tool import crawl_meeyland_by_page
 
 
-for page in tqdm(range(10000)):
+for page in tqdm(range(1, 4)):
     try:
         data = crawl_meeyland_by_page(page)
         time.sleep(5)

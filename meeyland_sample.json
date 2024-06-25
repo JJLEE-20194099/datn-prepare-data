@@ -1,0 +1,71 @@
+
+
+
+
+
+
+{
+  "houseInfo": {
+    "value": {
+      "numberOfFloors": 1,
+      "numberOfBedRooms": 0
+    }
+  },
+  "propertyBasicInfo": {
+    "landType": {
+      "value": "residentialLand"
+    },
+    "accessibility": {
+      "value": "notInTheAlley"
+    },
+    "frontRoadWidth": {
+      "value": 0
+    },
+    "address": {
+      "value": {
+        "addressDetails": "",
+        "street": "Lĩnh Nam",
+        "ward": "Lĩnh Nam",
+        "district": "Hoàng Mai",
+        "city": "Hà Nội",
+        "country": "Việt Nam"
+      }
+    },
+    "description": {
+      "value": "<p>LĨNH NAM BÁN 46M ĐẤT, MT 4,5M - ĐẤT LÔ GÓC - 2 MẶT NGÕ THÔNG Ô TÔ TRÁNH DỪNG ĐỖ NGÀY ĐÊM - KINH DOANH SẦM UẤT - HOÀNG MAI</p><p><br /></p><p>• Liên hệ:      0986209188</p><p><br /></p><p>+ Vị trí đẹp, mặt ngõ thông, lô góc hai mặt tiền đều ô tô, kinh doanh các loại hình.</p><p>+ Đất không có gì mô tả.</p><p>+ Sổ đỏ chính chủ cất két.</p><p>+ Giá 6,25 Tỷ.</p>"
+    },
+    "geolocation": {
+      "value": {
+        "latitude": {
+          "value": "20.983566"
+        },
+        "longitude": {
+          "value": "105.875573"
+        }
+      }
+    },
+    "typeOfRealEstate": {
+      "value": "privateLand"
+    },
+    "facade": {
+      "value": "twoSideOpen"
+    },
+    "houseDirection": {
+      "value": "tây"
+    },
+    "landSize": {
+      "value": 46
+    },
+    "price": {
+      "value": 6.25
+    },
+    "unitPrice": {
+      "value": "billion"
+    }
+  },
+  "crawlInfo": {
+    "id": "105920208",
+    "source": "meeyland",
+    "time": "2024-06-22T08:11:00"
+  }
+}
