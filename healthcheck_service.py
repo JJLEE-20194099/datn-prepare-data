@@ -15,10 +15,14 @@ def make_requests(url, request_type = "GET", payload = {}, headers = {}):
 
 def crawl_healthcheck_service():
     url = "http://127.0.0.1:8885/healthcheck"
-    response = make_requests(url, request_type = "GET")
-    if response.status_code == 200:
-        crawl_healthcheck_client.webhook_push_sucess_noti(title = "CRAWLBOT HEALTHCHECK", message = "SERVICE UP")
-    else:
-        crawl_healthcheck_client.webhook_push_error_noti(title = "CRAWLBOT HEALTHCHECK", message = "SERVICE DOWN")
+    try:
+        response = make_requests(url, request_type = "GET")
+        if response.status_code == 200:
+            crawl_healthcheck_client.webhook_push_sucess_noti(title = "CRAWLBOT HEALTHCHECK", message = "SERVICE UP")
+        else:
+            crawl_healthcheck_client.webhook_push_error_noti(title = "CRAWLBOT HEALTHCHECK", message = "SERVICE DOWN")
+    except Exception as e:
+        crawl_healthcheck_client.webhook_push_error_noti(title = "CRAWLBOT HEALTHCHECK", message = f"SERVICE DOWN - {e}")
+
 
 crawl_healthcheck_service()
