@@ -21,6 +21,11 @@ proxies = {
 
 app = FastAPI()
 
+
+@app.get("/healthcheck")
+def healthcheck():
+    return 1
+
 @app.get("/meeyland/get_key",tags=["meeyland"])
 def get_key():
     key_meeyland = get_key_meeyland()
