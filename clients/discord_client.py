@@ -8,11 +8,11 @@ load_dotenv(override=True)
 
 
 class DiscordClient:
-    def __init__(self, url = None) -> None:
+    def __init__(self, url = None, bot_name = None) -> None:
         self.avatar_url="https://hackmd.io/_uploads/ryCoI5zDC.png"
         self.sucess_icon="https://cdn.discordapp.com/attachments/1089021958429085767/1196355828685475871/success.512x512.png?ex=65b75430&is=65a4df30&hm=9367d7ae96c4463e0eb5d34d4207fc91d4c37182ff25f33362ba5a21b33794d4&"
         self.error_icon="https://cdn.discordapp.com/attachments/1089021958429085767/1196355828907778078/failure.512x512.png?ex=65b75430&is=65a4df30&hm=c266fabd801cff352c2b4fb46b53b3f37c802aedbbaac6c1ec02908d0320d532&"
-        self.bot_name="DATN - CRAWLBOT"
+        self.bot_name=bot_name
         self.author_url = "https://avatars.githubusercontent.com/u/109773340?s=200&v=4"
         self.icon_url = "https://avatars0.githubusercontent.com/u/14542790"
         self.footer_content = "Copyright belongs to Long"
