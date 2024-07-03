@@ -108,3 +108,5 @@ def crawl_meeyland_by_page(page):
         if len(operations):
             collection.bulk_write(operations,ordered=False)
 
+    return data
+

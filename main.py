@@ -40,8 +40,8 @@ def get_key_meeyland():
                 return script.get('src').split('/')[5]
 
 global key_meeyland
-# key_meeyland = get_key_meeyland()
-key_meeyland = '3lSCmuj_ATB848GjrZFCu'
+key_meeyland = get_key_meeyland()
+# key_meeyland = 'JpDY4I2Y17pY2GR4tUhTY'
 
 @app.get("/mogi/crawl_url",tags=["mogi.vn"])
 def crawl_url(page: int, proxy: str = None):
