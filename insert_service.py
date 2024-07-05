@@ -8,6 +8,7 @@ from kafka import TopicPartition
 from airflow import DAG
 import os
 import math
+import os
 
 from utils import nan_2_none
 load_dotenv(override=True)
@@ -58,17 +59,17 @@ def insert():
                 cnt += 1
                 hash_str = hash(message_data["propertyBasicInfo"]["description"]["value"])
 
-                if Redis().check_id_exist(f'meeyland_offset_{tp.partition}_{hash_str}', 'meeyland_insert_db'):
+                if Redis().check_id_exist(f'meeyland_offset_{tp.partition}_{hash_str}', 'insert_set'):
                     print("Ignore")
                     continue
 
-                Redis().add_id_to_set(f'meeyland_offset_{tp.partition}_{hash_str}', 'meeyland_insert_db')
+                Redis().add_id_to_set(f'meeyland_offset_{tp.partition}_{hash_str}', 'insert_set')
                 record = nan_2_none(message_data)
                 operations.append(
                     InsertOne(record)
                 )
                 print("Insert 1 ok")
-
+                n_tries = 0
 
                 if len(operations) >= 20:
                     collection.bulk_write(operations,ordered=False)
@@ -87,3 +88,5 @@ def insert():
 
 
 insert()
+
+os.system("sh stop_server.sh")

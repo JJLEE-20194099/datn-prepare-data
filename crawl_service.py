@@ -106,11 +106,11 @@ def crawl_meeyland_by_page(page):
     if data is not None:
         operations = []
         for item in data:
-            if Redis().check_id_exist(item['_id'], 'raw_meeyland'):
+            if Redis().check_id_exist(item['_id'], 'crawl_set'):
                 print("Ignore")
                 continue
             if Kafka(broker_id = 0).send_data(item,'raw_meeyland') == True:
-                Redis().add_id_to_set(item['_id'], 'raw_meeyland')
+                Redis().add_id_to_set(item['_id'], 'crawl_set')
                 operations.append(
                     InsertOne({
                         "crawl_at": datetime.now(),
@@ -127,7 +127,7 @@ def crawl_meeyland_by_page(page):
 
 
 def crawl():
-    for page in tqdm(range(1, 50)):
+    for page in tqdm(range(1, 4)):
         try:
             data = crawl_meeyland_by_page(page)
             time.sleep(5)

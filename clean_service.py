@@ -116,11 +116,11 @@ def clean():
 
                 hash_str = hash(message.value['content'])
 
-                if Redis().check_id_exist(f'meeyland_offset_{tp.partition}_{hash_str}', 'meeyland_clean_rawdata'):
+                if Redis().check_id_exist(f'meeyland_offset_{tp.partition}_{hash_str}', 'clean_set'):
                     print("Ignore Processed Messages")
                     continue
                 print("Consume Message in Topic:", tp.topic, "Partition:", tp.partition, "Offset:", message.offset)
-                Redis().add_id_to_set(f'meeyland_offset_{tp.partition}_{hash_str}', 'meeyland_clean_rawdata')
+                Redis().add_id_to_set(f'meeyland_offset_{tp.partition}_{hash_str}', 'clean_set')
                 processMeeyland(message,KafkaInstance)
 
                 cnt += 1
