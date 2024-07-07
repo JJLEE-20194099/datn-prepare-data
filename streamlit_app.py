@@ -5,13 +5,15 @@ import requests
 from streamlit_option_menu import option_menu
 import pandas as pd
 import os
-import pickle
 import requests
 import json
 import time
-from data.test import transform_data
 from matplotlib import pyplot as plt
 import seaborn as sns
+
+from chart_app import fig1, fig2, fig3, fig4, fig5, fig6
+
+from dash import Dash, html, dcc, Input, Output, Patch, clientside_callback, callback
 
 from utils import update_district_ward_street_util, update_street_util, update_ward_street_util
 
@@ -24,7 +26,7 @@ st.set_page_config(
 with open( "data/style.css" ) as css:
     st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
-def predict_price(body, lottie_container):
+def predict_price(body, lottie_container_1, lottie_container_2):
     url = "http://localhost:2001/predict-realestate-batch"
 
     payload = json.dumps({
@@ -47,12 +49,21 @@ def predict_price(body, lottie_container):
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-    lottie_container.empty()
+    lottie_container_1.empty()
+    lottie_container_2.empty()
+
     return response.json()[0]
 
 
 data = json.load(open('/home/long/airflow/dags/schema/expectations/address.json', 'r'))
 
+
+left, middle, right = st.columns((1, 1, 7))
+with left:
+    st.image("./data/logo.png")
+with middle:
+    st.header(":green[𝐵𝒦𝒫𝓇𝒾𝒸𝑒 𝒮𝓎𝓈𝓉𝑒𝓂]")
+    st.write(":orange[                 𝓘𝓶𝓹𝓻𝓸𝓿𝓮 𝓟𝓻𝓮𝓭𝓲𝓬𝓽𝓲𝓸𝓷 𝓠𝓾𝓪𝓵𝓲𝓽𝔂]")
 
 
 
@@ -85,18 +96,18 @@ if selected == "Home":
         with st.container():
             col1, col2 = st.columns([2.5, 2.5])
             with col1:
-                st.header(":green[𝒜𝒷𝑜𝓊𝓉 𝓉𝒽𝒾𝓈 𝒶𝓅𝓅]")
-                st.markdown("- Easily predict Vietnamese realestate price using our :green[BKPrice Predictor]  \n- View realestate statistics using using our :green[BKPrice Insights]  \n- View recent predictions using our :green[BKPrice History] \n- Interact with BKPrice MLOps pipeline using :green[BKPrice Chatbot]")
+                st.header(":green[𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓔𝔁𝓹𝓵𝓸𝓻𝓮]")
+                st.markdown("- :orange[Automate] data collection  \n- :orange[Automate] the process of building training dataset  \n- :orange[Automate] the process of updating and evaluating AI models \n- :orange[High level] of system automation\n- :orange[Leverage] the strengths of :orange[LLM] to interact with :orange[MLOps pipeline more easily]")
             with col2:
-                st.header(":green[𝐵𝒦𝒫𝓇𝒾𝒸𝑒 𝒮𝓎𝓈𝓉𝑒𝓂]")
-                st.image("data/hust_logo.png", width=350)
+                st.header(":green[𝓐𝓫𝓸𝓾𝓽 𝓽𝓱𝓲𝓼 𝓪𝓹𝓹]")
+                st.markdown("- Easily predict Vietnamese realestate price using our :orange[BKPrice Predictor]  \n- View realestate statistics using using our :orange[BKPrice Insights]  \n- View recent predictions using our :orange[BKPrice History] \n- Interact with BKPrice MLOps pipeline using :orange[BKPrice Chatbot]")
 
             st_lottie(url_json,
             reverse=False,
             height=20,
             width=1200,
             speed=1.25,
-            loop=False,
+            loop=True,
             quality='low',
             key='high'
             )
@@ -106,23 +117,24 @@ if selected == "Home":
         with st.container():
             col1, col2= st.columns([2.5, 2.5])
             with col1:
-                s = f"<p style='font-size:25px; color: green; font-weight:600'>What is MLOps Pipeline?</p>"
+                s = f"<p style='font-size:22px; color: green; font-weight:600'>𝓦𝓱𝓪𝓽 𝓲𝓼 𝓜𝓛𝓞𝓹𝓼 𝓟𝓲𝓹𝓮𝓵𝓲𝓷𝓮?</p>"
                 st.markdown(s, unsafe_allow_html=True)
-                st.write("An MLOps pipeline is essentially an automated workflow that manages the entire lifecycle of a machine learning model, from its development to deployment and monitoring in production. This pipeline automates steps like data preparation, training, testing, and deployment, ensuring a smooth and efficient process for getting the most out of your models. By automating these tasks, MLOps pipelines help to improve the accuracy, reliability, and overall effectiveness of machine learning projects. To address many challenges in automatic tasks relate to vietnamese realestate, this study proposes an automated process encompassing data preparation, model development, post-processing, automatic evaluation, and monitoring.")
+                st.write("An MLOps pipeline is essentially an automated workflow that manages the entire lifecycle of a machine learning model, from its development to deployment and monitoring in production. This pipeline automates steps like data preparation, training, testing, and deployment, ensuring a smooth and efficient process for getting the most out of your models. By automating these tasks, MLOps pipelines help to improve the accuracy, reliability, and overall effectiveness of machine learning projects. To address many challenges in automatic tasks relate to vietnamese realestate, this study :orange[proposes an automated process] encompassing data preparation, model development, post-processing, automatic evaluation, and monitoring.")
             with col2:
-                s = f"<p style='font-size:25px; color: green; font-weight:600'>Why predict Vietnamese realestate price?</p>"
+                s = f"<p style='font-size:22px; color: green; font-weight:600'>𝓦𝓱𝔂 𝓹𝓻𝓮𝓭𝓲𝓬𝓽 𝓥𝓲𝓮𝓽𝓷𝓪𝓶𝓮𝓼𝓮 𝓻𝓮𝓪𝓵𝓮𝓼𝓽𝓪𝓽𝓮 𝓹𝓻𝓲𝓬𝓮?</p>"
                 st.markdown(s, unsafe_allow_html=True)
-                st.write("Vietnamese realestate data is updated daily requires artificial intelligence services to be updated accordingly. Many AI services in the real estate sector have not yet recognized the importance of this issue and have affected the user experience in terms of the reliability of real estate price predictions. In addition, the process of building and deploying AI models in many products does not ensure integrity and reliability and directly affects end users such as: deployed models are subjectively evaluated by the model builder, the training process is not properly monitored. Therefore, it is inevitable that AI models give unreliable prediction results, directly affecting users.")
+                st.write("Vietnamese realestate data is updated daily :orange[requires artificial intelligence services to be updated] accordingly. Many AI services in the real estate sector :orange[have not yet recognized] the importance of this issue and have :orange[affected the user experience] in terms of the reliability of real estate price predictions. In addition, the process of building and deploying AI models in many products :orange[does not ensure integrity and reliability] and directly affects end users such as: deployed models are subjectively evaluated by the model builder, the training process is not properly monitored. Therefore, it is inevitable that :orange[AI models give unreliable prediction results], directly affecting users.")
 
             st_lottie(url_json,
             reverse=False,
             height=20,
             width=1200,
             speed=1.25,
-            loop=False,
+            loop=True,
             quality='low',
             key='div2'
             )
+
 
 # 3. Prediction history page
 column1, column2, column3 = st.columns([1.5, 3, 1.5])
@@ -172,6 +184,29 @@ if selected == "BKPrice Insights":
             st.metric(label="", value=0, delta=None, delta_color="inverse")
             st.write("")
 
+    outer_col7, outer_col8 = st.columns([2, 2])
+    with outer_col7:
+        st.header("𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓜𝓪𝓹", anchor=False)
+        st.plotly_chart(fig1, theme = 'streamlit', height = 1500)
+
+    with outer_col8:
+        st.header("𝓣𝓪𝓻𝓰𝓮𝓽𝓟𝓻𝓲𝓬𝓮 𝓜𝓪𝓹", anchor=False)
+        st.plotly_chart(fig2, theme = 'streamlit', height = 1500)
+
+    left1, middle1, right1 = st.columns((1, 7, 1))
+    with middle1:
+        style = "<style>h2 {text-align: center; color: green}</style>"
+        st.markdown(style, unsafe_allow_html=True)
+        st.header("𝓡𝓮𝓪𝓵𝓮𝓼𝓽𝓪𝓽𝓮 𝓟𝓻𝓲𝓬𝓮 𝓢𝓽𝓪𝓽𝓲𝓼𝓽𝓲𝓬 𝓑𝔂 𝓓𝓲𝓼𝓽𝓻𝓲𝓬𝓽", anchor=False)
+        st.plotly_chart(fig3, theme = 'streamlit', height = 1500, use_container_width = True)
+
+    left2, middle2, right2 = st.columns((1, 7, 1))
+    with middle1:
+        style = "<style>h2 {text-align: center; color: green}</style>"
+        st.markdown(style, unsafe_allow_html=True)
+        st.header("𝓢𝓮𝓮 𝓶𝓸𝓻𝓮 - 𝓛𝓲𝓷𝓴", anchor=False)
+
+
 
 
 
@@ -202,6 +237,13 @@ load_url = requests.get("https://assets5.lottiefiles.com/packages/lf20_awP420Zf8
 load_url_json = dict()
 if load_url.status_code == 200:
     load_url_json = load_url.json()
+else:
+      print("Error in URL")
+
+load_url = requests.get("https://assets2.lottiefiles.com/packages/lf20_mDnmhAgZkb.json")
+load_url_json_v2 = dict()
+if load_url.status_code == 200:
+    load_url_json_v2 = load_url.json()
 else:
       print("Error in URL")
 
@@ -286,17 +328,29 @@ if selected == "BKPrice Predict":
         # scoring_sample = transform_data(scoring_data, column_order_out, mean_eve_mins, onehot)
         # st.write(scoring_sample)
 
-        lottie_container = st.empty()
-        with lottie_container:
-            st_lottie(load_url_json,
+        lottie_container_1 = st.empty()
+        with lottie_container_1:
+
+            st_lottie(load_url_json_v2,
                 speed=1.5,
+                height = 200,
+                quality='high',
+                loop=True,
+                key='Car'
+            )
+
+        lottie_container_2 = st.empty()
+        with lottie_container_2:
+
+            st_lottie(load_url_json,
+                speed=1.25,
                 height = 200,
                 quality='high',
                 loop=True,
                 key='Boy'
             )
 
-        estimate_price = predict_price(options, lottie_container)
+        estimate_price = predict_price(options, lottie_container_1, lottie_container_2)
         st.write("Predicted outcome")
         if estimate_price > 200:
             st.write(f"Estimate Price :green[{estimate_price}]")
