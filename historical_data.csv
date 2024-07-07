@@ -1,0 +1,2 @@
+landSize,city,district,ward,street,prefixDistrict,numberOfFloors,numberOfBathRooms,numberOfBedRooms,frontWidth,endWidth,frontRoadWidth,certificateOfLandUseRight,typeOfRealEstate,facade,houseDirection,facility_check_ok,narrow_alley,version,prediction
+2515.0,hn,hà đông,Văn Quán,Chiến Thắng,quận,50,150,350,401.25,401.25,51.0,True,privateProperty,oneSideOpen,southeast,True,1,v0,355.85898402316946

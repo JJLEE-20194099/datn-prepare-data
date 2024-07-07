@@ -58,7 +58,7 @@ def insert():
                 message_data = message.value
                 cnt += 1
                 hash_str = hash(message_data["propertyBasicInfo"]["description"]["value"])
-
+                n_tries = 0
                 if Redis().check_id_exist(f'meeyland_offset_{tp.partition}_{hash_str}', 'insert_set'):
                     print("Ignore")
                     continue
@@ -69,8 +69,6 @@ def insert():
                     InsertOne(record)
                 )
                 print("Insert 1 ok")
-                n_tries = 0
-
                 if len(operations) >= 20:
                     collection.bulk_write(operations,ordered=False)
                     print(f"Insert batch size - {len(operations)} clean realestates to database")

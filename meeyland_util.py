@@ -417,7 +417,7 @@ def transferMeeyland(a):
    data_merge = {
                "propertyType": propertyType_,
                "propertyStatus": "SURVEYING",
-               "mediaInfo": {},
+               "mediaInfo": {"certificateOfLandUseRight": certificateOfLandUseRight(a)},
                "houseInfo": { "value": houseInfo(a)},
                "propertyBasicInfo": { "landType": { "value": propertyBasicInfo(a) },
                   "accessibility": { "value": accessibility(a) },

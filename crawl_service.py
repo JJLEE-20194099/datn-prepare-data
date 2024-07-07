@@ -127,7 +127,7 @@ def crawl_meeyland_by_page(page):
 
 
 def crawl():
-    for page in tqdm(range(1, 4)):
+    for page in tqdm(range(50, 100)):
         try:
             data = crawl_meeyland_by_page(page)
             time.sleep(5)
