@@ -105,6 +105,7 @@ def crawl_meeyland_by_page(page):
     data = Meeyland().crawl_data_by_page(page)
     if data is not None:
         operations = []
+        process_data = []
         for item in data:
             if Redis().check_id_exist(item['_id'], 'crawl_set'):
                 print("Ignore")
@@ -119,17 +120,31 @@ def crawl_meeyland_by_page(page):
                     })
                 )
                 print("Insert 1 record ok")
+                process_data.append(item)
         if len(operations):
             collection.bulk_write(operations,ordered=False)
-        return data
+        return process_data
 
     return []
 
+status_collection = __database["system_status"]
 
 def crawl():
+    cnt = 0
     for page in tqdm(range(50, 100)):
         try:
             data = crawl_meeyland_by_page(page)
+            cnt += len(data)
+            obj = {
+                "mlops_step_id": "crawl",
+                "metadata": {
+                    "status": "processing",
+                    "progress_pct": (page - 50 + 1) / 50,
+                    "num_of_crawled_sample": cnt
+                }
+            }
+            status_collection.update_one({"mlops_step_id": "crawl"}, {"$set": obj}, upsert=True)
+
             time.sleep(5)
         except Exception as e:
             print(e)
