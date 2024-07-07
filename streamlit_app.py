@@ -20,7 +20,8 @@ from utils import update_district_ward_street_util, update_street_util, update_w
 st.set_page_config(
     page_title = "BKPrice System",
     layout="wide",
-    page_icon='data/logo.png'
+    page_icon='data/logo.png',
+    initial_sidebar_state="expanded"
 )
 
 with open( "data/style.css" ) as css:
@@ -71,7 +72,7 @@ with middle:
 selected = option_menu(
     menu_title = None,
     # options=["Home", "Predict", "Prediction history", "Our Insights", "Contact"],
-    options=["Home", "BKPrice Predict", "BKPrice History", "BKPrice Insights", "BKPrice Chatbot"],
+    options=["𝓗𝓸𝓶𝓮", "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓟𝓻𝓮𝓭𝓲𝓬𝓽", "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓗𝓲𝓼𝓽𝓸𝓻𝔂", "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓘𝓷𝓼𝓲𝓰𝓱𝓽𝓼", "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓒𝓱𝓪𝓽𝓫𝓸𝓽"],
     icons=["house", "bar-chart-line", "box", "file-bar-graph", "chat", "gear"],
     orientation="horizontal",
     styles={
@@ -90,7 +91,7 @@ if url.status_code == 200:
 else:
     print("Error in URL")
 # 2. Home Page
-if selected == "Home":
+if selected == "𝓗𝓸𝓶𝓮":
     outer_col1, outer_col2, outer_col3 = st.columns([1, 5, 1])
     with outer_col2:
         with st.container():
@@ -139,8 +140,8 @@ if selected == "Home":
 # 3. Prediction history page
 column1, column2, column3 = st.columns([1.5, 3, 1.5])
 with column2:
-    if selected == "BKPrice History":
-        st.subheader("Historical Outcomes")
+    if selected == "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓗𝓲𝓼𝓽𝓸𝓻𝔂":
+        st.subheader(":green[𝓗𝓲𝓼𝓽𝓸𝓻𝓲𝓬𝓪𝓵 𝓞𝓾𝓽𝓬𝓸𝓶𝓮𝓼]")
         if os.path.isfile("./data/historical_data.csv"):
             historical_data = pd.read_csv("./data/historical_data.csv")
 
@@ -158,15 +159,15 @@ with column2:
                 st.bar_chart(data=chart_data, x="District", y=f"Mean Predict Price in {prefix}", height = 500)
 
             st.divider()
-            st.subheader("Historical Input")
+            st.subheader(":green[𝓗𝓲𝓼𝓽𝓸𝓻𝓲𝓬𝓪𝓵 𝓘𝓷𝓹𝓾𝓽]")
 
             st.dataframe(historical_data, use_container_width=False)
         else:
-            st.write("No historical data")
+            st.write(":green[𝓝𝓸 𝓱𝓲𝓼𝓽𝓸𝓻𝓲𝓬𝓪𝓵 𝓭𝓪𝓽𝓪]")
 
 
 # 4. Our insights page
-if selected == "BKPrice Insights":
+if selected == "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓘𝓷𝓼𝓲𝓰𝓱𝓽𝓼":
     outer_col4, outer_col5, outer_col6 = st.columns([1, 1, 1])
     with outer_col4:
         st.header("**", anchor=False)
@@ -248,7 +249,7 @@ else:
       print("Error in URL")
 
 # 6. Prediction page
-if selected == "BKPrice Predict":
+if selected == "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓟𝓻𝓮𝓭𝓲𝓬𝓽":
     # load schema
     with open("./data/schema.json", "r") as f:
         schema = json.load(f)
@@ -376,6 +377,6 @@ if selected == "BKPrice Predict":
         df.to_csv("./data/historical_data.csv", header = True, index = False)
 
 
-if selected == "BKPrice Chatbot":
+if selected == "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓒𝓱𝓪𝓽𝓫𝓸𝓽":
     gradio_interface_url = "http://127.0.0.1:7860/"  # Example URL
     st.write(f'<iframe src="{gradio_interface_url}"  width = "1750" height="600"></iframe>', unsafe_allow_html=True)
