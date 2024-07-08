@@ -131,7 +131,7 @@ status_collection = __database["system_status"]
 
 def crawl():
     cnt = 0
-    for page in tqdm(range(50, 100)):
+    for page in tqdm(range(1, 51)):
         try:
             data = crawl_meeyland_by_page(page)
             cnt += len(data)
@@ -139,7 +139,7 @@ def crawl():
                 "mlops_step_id": "crawl",
                 "metadata": {
                     "status": "processing",
-                    "progress_pct": (page - 50 + 1) / 50,
+                    "progress_pct": (page) / 50,
                     "num_of_crawled_sample": cnt
                 }
             }

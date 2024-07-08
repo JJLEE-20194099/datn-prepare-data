@@ -6,9 +6,18 @@ import requests
 import uvicorn
 import threading
 from tqdm import tqdm
+import os
+import json
+
+from dotenv import load_dotenv
+import os
+
+from utils import nan_2_none
+load_dotenv(override=True)
 
 from crawler_tool import Batdongsan, crawl_batdongsan_by_url
 from consume.utils import Redis
+from batdongsan_util import transferBatdongsan
 
 lst_proxy = []
 with open(r"./ip.txt", 'r') as f:
@@ -118,30 +127,58 @@ def crawl_data_by_url(url: str, proxy: str = None):
 @app.get("/batdongsan/crawl_url",tags=["batdongsan.com.vn"])
 def crawl_url(page: int,proxy: str = None):
 
-    with SB(uc=True,headless=True,block_images=True,proxy_bypass_list=lst_proxy,time_limit=30) as sb:
-        if page == 0 or page == 1:
-            url = 'https://batdongsan.com.vn/nha-dat-ban?sortValue=1'
-        else:
-            url = f'https://batdongsan.com.vn/nha-dat-ban/p{page}?sortValue=1'
-        sb.open(url)
-        time.sleep(1)
-        html = sb.get_page_source()
-        soup = BeautifulSoup(html, 'html.parser')
+    import requests
 
-        links = soup.find_all('a', class_='js__product-link-for-product-id')
-        links = ['https://batdongsan.com.vn'+link['href'] for link in links]
-    return links
+    url = f"{os.getenv('BDS_CRAWL_SERVER')}/batdongsan/crawl_url?page={page}"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    return response.json()
+
 
 @app.get("/batdongsan/crawl_data_by_url",tags=["batdongsan.com.vn"])
 def crawl_data_by_url(url: str, proxy: str = None):
-    with SB(uc=True,block_images=True,headless=True, proxy_bypass_list=lst_proxy,time_limit=30) as sb:
-        sb.open(url)
-        time.sleep(1)
-        html_content = sb.get_page_source()
+
+    url = f"{os.getenv('BDS_CRAWL_SERVER')}/batdongsan/crawl_data_by_url?url={url}"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    html_content = response.json()["html_content"]
     return {
         'success': True,
         'url': url,
         'html_source': html_content
+    }
+
+
+with open('streets.json', encoding='utf-8') as f:
+   streets = json.load(f)
+
+
+locationql = [item["STREET"].lower() + ", " + item["WARD"].lower() + ", " + item["DISTRICT"].lower() + ", " + item["CITY"].lower() for item in tqdm(streets)]
+
+@app.get("/batdongsan/clean_data_by_url",tags=["batdongsan.com.vn"])
+def crawl_data_by_url(url: str, proxy: str = None):
+
+    url = f"{os.getenv('BDS_CRAWL_SERVER')}/batdongsan/crawl_data_by_url?url={url}"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    html_content = response.json()["html_content"]
+
+    clean_data = transferBatdongsan(html_content, streets, locationql, get_all = True)
+    record = nan_2_none(clean_data)
+
+    return {
+        'success': True,
+        'clean_data': record
     }
 
 

@@ -59,7 +59,7 @@ def predict_price(body, lottie_container_1, lottie_container_2):
 data = json.load(open('/home/long/airflow/dags/schema/expectations/address.json', 'r'))
 
 
-left, middle, right = st.columns((1, 1, 7))
+left, middle, right = st.columns((1, 2, 7))
 with left:
     st.image("./data/logo.png")
 with middle:
@@ -279,9 +279,7 @@ if selected == "𝓑𝓚𝓟𝓻𝓲𝓬𝓮 𝓟𝓻𝓮𝓭𝓲𝓬𝓽":
     # collect input features
     options = {}
     for column, column_properties in schema["column_info"].items():
-        if column == "churn":
-            pass
-        elif column_properties["dtype"] == "int64" or column_properties["dtype"]=="float64":
+        if column_properties["dtype"] == "int64" or column_properties["dtype"]=="float64":
             min_val, max_val = column_properties["values"]
             data_type = column_properties["dtype"]
 

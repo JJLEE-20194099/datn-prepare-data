@@ -1,1 +1,1 @@
-streamlit run streamlit_app.py --browser.gatherUsageStats false
+streamlit run streamlit_app.py --browser.gatherUsageStats false --server.port 8501 --server.enableWebsocketCompression=false
